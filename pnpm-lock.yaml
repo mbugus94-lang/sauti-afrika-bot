@@ -171,7 +171,7 @@ importers:
         specifier: ^19.2.1
         version: 19.2.4(react@19.2.4)
       react-hook-form:
-        specifier: ^7.72.0
+        specifier: ^7.64.0
         version: 7.72.0(react@19.2.4)
       react-resizable-panels:
         specifier: ^4.7.4
@@ -220,7 +220,7 @@ importers:
         specifier: ^3.58.1
         version: 3.58.1
       '@types/node':
-        specifier: ^25.5.0
+        specifier: ^24.7.0
         version: 25.5.0
       '@types/react':
         specifier: ^19.2.1
@@ -229,7 +229,7 @@ importers:
         specifier: ^19.2.1
         version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
-        specifier: ^6.0.1
+        specifier: ^5.0.4
         version: 6.0.1(vite@8.0.1(@types/node@25.5.0)(esbuild@0.25.12)(jiti@2.6.1)(tsx@4.21.0))
       add:
         specifier: ^2.0.6
@@ -238,10 +238,10 @@ importers:
         specifier: ^10.4.20
         version: 10.4.27(postcss@8.5.8)
       cross-env:
-        specifier: ^10.1.0
+        specifier: ^7.0.3
         version: 10.1.0
       drizzle-kit:
-        specifier: ^0.31.4
+        specifier: ^0.31.10
         version: 0.31.10
       esbuild:
         specifier: ^0.25.12
@@ -268,13 +268,13 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
       vite:
-        specifier: ^8.0.1
+        specifier: ^7.1.9
         version: 8.0.1(@types/node@25.5.0)(esbuild@0.25.12)(jiti@2.6.1)(tsx@4.21.0)
       vite-plugin-manus-runtime:
         specifier: ^0.0.57
         version: 0.0.57
       vitest:
-        specifier: ^4.1.0
+        specifier: ^2.1.4
         version: 4.1.0(@types/node@25.5.0)(vite@8.0.1(@types/node@25.5.0)(esbuild@0.25.12)(jiti@2.6.1)(tsx@4.21.0))
 
 packages:
@@ -3033,6 +3033,9 @@ packages:
   get-tsconfig@4.13.6:
     resolution: {integrity: sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==}
 
+  get-tsconfig@4.13.7:
+    resolution: {integrity: sha512-7tN6rFgBlMgpBML5j8typ92BKFi2sFQvIdpAqLA2beia5avZDrMs0FLZiM5etShWq5irVyGcGMEA1jcDaK7A/Q==}
+
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
     engines: {node: '>= 0.4'}
@@ -4665,7 +4668,7 @@ snapshots:
   '@esbuild-kit/esm-loader@2.6.5':
     dependencies:
       '@esbuild-kit/core-utils': 3.3.2
-      get-tsconfig: 4.13.6
+      get-tsconfig: 4.13.7
 
   '@esbuild/aix-ppc64@0.25.12':
     optional: true
@@ -7079,6 +7082,10 @@ snapshots:
       es-object-atoms: 1.1.1
 
   get-tsconfig@4.13.6:
+    dependencies:
+      resolve-pkg-maps: 1.0.0
+
+  get-tsconfig@4.13.7:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
