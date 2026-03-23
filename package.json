@@ -1,6 +1,6 @@
 {
   "name": "african-lang-chatbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -86,7 +86,7 @@
     "@tailwindcss/vite": "^4.2.2",
     "@types/express": "^5.0.6",
     "@types/google.maps": "^3.58.1",
-    "@types/node": "^24.12.0",
+    "@types/node": "^24.13.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
