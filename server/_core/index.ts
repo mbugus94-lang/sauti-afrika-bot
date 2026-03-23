@@ -182,6 +182,15 @@ async function startServer() {
     serveStatic(app);
   }
 
+  // Health check endpoint
+  app.get('/health', (c) => {
+    return c.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(), 
+      uptime: process.uptime() 
+    });
+  });
+
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
 
