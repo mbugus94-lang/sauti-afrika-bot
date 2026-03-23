@@ -12,6 +12,23 @@
 4. Run `pnpm dev:local`.
 5. Open `http://localhost:3000`.
 
+## 🔍 Health Checks
+
+The API includes a health check endpoint for monitoring:
+
+```bash
+curl http://localhost:3000/health
+```
+
+Response:
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-15T10:30:00.000Z",
+  "uptime": 3600
+}
+```
+
 ## LLM Configuration (any provider)
 Use any OpenAI-compatible endpoint (local or hosted). You can also disable the external API entirely and use mock mode.
 
