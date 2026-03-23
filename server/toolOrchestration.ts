@@ -133,8 +133,8 @@ const tools: Record<string, Tool> = {
     },
     execute: async (args) => {
       try {
-        // Simple expression evaluation (use a library like math.js in production)
-        const result = eval((args.expression as string).replace(/[^0-9+\-*/().]/g, ""));
+        // Safe mathematical expression evaluation without eval()
+        const result = safeMathEval(args.expression as string);
         return { result, expression: args.expression };
       } catch (error) {
         return { error: "Invalid mathematical expression" };
@@ -304,4 +304,144 @@ export function registerTool(tool: Tool): void {
  */
 export function unregisterTool(toolName: string): void {
   delete tools[toolName];
+}
+
+/**
+ * Safely evaluate a mathematical expression without using eval()
+ * Supports: +, -, *, /, parentheses, and decimal numbers
+ */
+function safeMathEval(expression: string): number {
+  // Remove all whitespace
+  const sanitized = expression.replace(/\s/g, '');
+  
+  // Validate characters - only allow numbers, operators, parentheses, and decimal points
+  if (!/^[\d+\-*/().]+$/.test(sanitized)) {
+    throw new Error('Invalid characters in expression');
+  }
+  
+  // Check for potentially dangerous patterns
+  if (sanitized.includes('..') || 
+      sanitized.startsWith('.') || 
+      sanitized.endsWith('.') ||
+      /[+\-*/]{2,}/.test(sanitized)) {
+    throw new Error('Malformed expression');
+  }
+  
+  // Tokenize the expression
+  const tokens: (string | number)[] = [];
+  let currentNum = '';
+  
+  for (let i = 0; i < sanitized.length; i++) {
+    const char = sanitized[i];
+    
+    if (/[\d.]/.test(char)) {
+      currentNum += char;
+    } else {
+      if (currentNum) {
+        const num = parseFloat(currentNum);
+        if (isNaN(num)) {
+          throw new Error('Invalid number');
+        }
+        tokens.push(num);
+        currentNum = '';
+      }
+      tokens.push(char);
+    }
+  }
+  
+  // Don't forget the last number
+  if (currentNum) {
+    const num = parseFloat(currentNum);
+    if (isNaN(num)) {
+      throw new Error('Invalid number');
+    }
+    tokens.push(num);
+  }
+  
+  // Evaluate using recursive descent parsing
+  return evaluateTokens(tokens);
+}
+
+/**
+ * Evaluate tokens using recursive descent parsing
+ * Handles operator precedence: parentheses > multiplication/division > addition/subtraction
+ */
+function evaluateTokens(tokens: (string | number)[]): number {
+  let index = 0;
+  
+  function parseExpression(): number {
+    let value = parseTerm();
+    
+    while (index < tokens.length) {
+      const token = tokens[index];
+      if (token === '+') {
+        index++;
+        value += parseTerm();
+      } else if (token === '-') {
+        index++;
+        value -= parseTerm();
+      } else {
+        break;
+      }
+    }
+    
+    return value;
+  }
+  
+  function parseTerm(): number {
+    let value = parseFactor();
+    
+    while (index < tokens.length) {
+      const token = tokens[index];
+      if (token === '*') {
+        index++;
+        value *= parseFactor();
+      } else if (token === '/') {
+        index++;
+        const divisor = parseFactor();
+        if (divisor === 0) {
+          throw new Error('Division by zero');
+        }
+        value /= divisor;
+      } else {
+        break;
+      }
+    }
+    
+    return value;
+  }
+  
+  function parseFactor(): number {
+    const token = tokens[index];
+    
+    if (typeof token === 'number') {
+      index++;
+      return token;
+    }
+    
+    if (token === '(') {
+      index++;
+      const value = parseExpression();
+      if (tokens[index] !== ')') {
+        throw new Error('Missing closing parenthesis');
+      }
+      index++;
+      return value;
+    }
+    
+    if (token === '-') {
+      index++;
+      return -parseFactor();
+    }
+    
+    throw new Error('Unexpected token');
+  }
+  
+  const result = parseExpression();
+  
+  if (index !== tokens.length) {
+    throw new Error('Unexpected token at end of expression');
+  }
+  
+  return result;
 }

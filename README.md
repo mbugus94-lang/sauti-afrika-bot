@@ -1,6 +1,9 @@
 # African Language Chatbot
 
-Server + client starter for a multilingual chatbot focused on African languages. This version adds low-cost local dev options, optional auth, in-memory DB fallback, and ready-to-use channel/webchat endpoints.
+<p align="center">
+  <strong>Multilingual AI chatbot for African languages - supporting Swahili, Yoruba, Zulu, Amharic and more.</strong><br>
+  <em>Server + client starter for a multilingual chatbot focused on African languages</em>
+</p>
 
 ## Quick start (local, no APIs)
 1. Install Node 18+ and pnpm.
