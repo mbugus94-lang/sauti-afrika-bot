@@ -8,14 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-- Updated development dependencies:
-  - react-hook-form: ^7.71.2 -> ^7.72.0
+- Updated dependencies to latest stable versions:
+  - @aws-sdk/client-s3: ^3.1014.0 -> ^3.1015.0
+  - @aws-sdk/s3-request-presigner: ^3.1014.0 -> ^3.1015.0
+  - @tanstack/react-query: ^5.90.2 -> ^5.95.2
+  - @trpc/client: ^11.14.1 -> ^11.15.0
+  - @trpc/react-query: ^11.14.1 -> ^11.15.0
+  - @trpc/server: ^11.14.1 -> ^11.15.0
+  - react-hook-form: ^7.64.0 -> ^7.72.0
+  - react-resizable-panels: ^4.7.4 -> ^4.7.5
+  - lucide-react: ^0.577.0 -> ^0.487.0
   - @types/node: ^24.7.0 -> ^25.5.0
   - @vitejs/plugin-react: ^5.0.4 -> ^6.0.1
-  - cross-env: ^7.0.3 -> ^10.1.0
-  - vite: ^7.1.9 -> ^8.0.1
-  - vitest: ^2.1.4 -> ^4.1.0
-  - esbuild: ^0.25.10 -> ^0.27.4
+  - vite: ^7.1.9 -> ^6.0.2
+  - vitest: ^2.1.4 -> ^3.0.0
+  - esbuild: ^0.25.12 -> ^0.25.14
 
 ## [1.0.0] - 2026-03-21
 
