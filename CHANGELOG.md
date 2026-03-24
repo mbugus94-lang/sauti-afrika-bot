@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-03-24
+
+### Added
+- New comprehensive test suite:
+  - `auth.test.ts` - Authentication and token validation tests
+  - `utils.test.ts` - Utility functions tests (phone formatting, text truncation, email validation)
+  - `language.test.ts` - Language detection and translation tests
+- Test coverage improved from minimal to comprehensive
+
+### Changed
+- Updated version to 1.0.5
+- Updated zod dependency to ^3.25.76
+
+### Security
+- All dependencies remain current and secure
+
+## [1.0.4] - 2026-03-24
+
 ## [1.0.3] - 2026-03-24
 
 ### Changed
