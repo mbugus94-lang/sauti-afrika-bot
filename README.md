@@ -17,6 +17,25 @@
 
 ## ✨ Features
 
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/mbugus94-lang/sauti-afrika-bot.git
+cd sauti-afrika-bot
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Copy the environment variables file:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
 - 🤖 **Multilingual AI** - Support for Swahili, Yoruba, Zulu, Amharic, and more
 - 💬 **Multi-channel** - Webchat, WhatsApp, Telegram, Discord integrations
 - 🔐 **Flexible Auth** - OAuth or local dev mode
