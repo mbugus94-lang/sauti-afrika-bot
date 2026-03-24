@@ -1,9 +1,30 @@
-# African Language Chatbot
+# Sauti Afrika Bot - African Language Chatbot
 
 <p align="center">
-  <strong>Multilingual AI chatbot for African languages - supporting Swahili, Yoruba, Zulu, Amharic and more.</strong><br>
-  <em>Server + client starter for a multilingual chatbot focused on African languages</em>
+  <strong>Multilingual AI chatbot for African languages</strong><br>
+  <em>Supporting Swahili, Yoruba, Zulu, Amharic and more</em>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Node.js-18+-yellow?logo=node.js" alt="Node.js">
+  <img src="https://img.shields.io/github/actions/workflow/status/mbugus94-lang/sauti-afrika-bot/ci.yml" alt="CI Status">
+</p>
+
+---
+
+## ✨ Features
+
+- 🤖 **Multilingual AI** - Support for Swahili, Yoruba, Zulu, Amharic, and more
+- 💬 **Multi-channel** - Webchat, WhatsApp, Telegram, Discord integrations
+- 🔐 **Flexible Auth** - OAuth or local dev mode
+- 💾 **Database Options** - MySQL or in-memory
+- ⚡ **Cost Controls** - Token limits and feature toggles
+- 🌍 **African-focused** - Designed for African languages and contexts
+
+---
 
 ## Quick start (local, no APIs)
 1. Install Node 18+ and pnpm.
@@ -11,6 +32,23 @@
 3. Run `pnpm install`.
 4. Run `pnpm dev:local`.
 5. Open `http://localhost:3000`.
+
+## 🔍 Health Checks
+
+The API includes a health check endpoint for monitoring:
+
+```bash
+curl http://localhost:3000/health
+```
+
+Response:
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-15T10:30:00.000Z",
+  "uptime": 3600
+}
+```
 
 ## LLM Configuration (any provider)
 Use any OpenAI-compatible endpoint (local or hosted). You can also disable the external API entirely and use mock mode.
