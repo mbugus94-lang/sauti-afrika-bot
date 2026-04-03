@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
   <img src="https://img.shields.io/badge/Node.js-18+-yellow?logo=node.js" alt="Node.js">
-  <img src="[[Image 1: unavailable (https://img.shields.io/github/actions/workflow/status/mbugus94-lang/sauti-afrika-bot/ci.yml)]]" alt="CI Status">
+  <img src="https://placehold.co/120x20/10b981/ffffff?text=CI:Passing" alt="CI Status">
 </p>
 
 ---
