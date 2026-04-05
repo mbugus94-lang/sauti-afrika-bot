@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sauti Afrika Bot - Multilingual African AI Chatbot Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .chat-bubble { border-radius: 18px; max-width: 80%; }
+        .chat-bubble-bot { background: #f3f4f6; border-bottom-left-radius: 4px; }
+        .chat-bubble-user { background: #10b981; color: white; border-bottom-right-radius: 4px; }
+        .typing-indicator span { animation: blink 1.4s infinite both; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+        .lang-flag { font-size: 1.5rem; margin-right: 0.5rem; }
+        .channel-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-comments text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Sauti Afrika Bot</h1>
+                        <p class="text-green-100">Multilingual African AI Chatbot</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-sm">
+                        <i class="fas fa-circle text-green-400 mr-2"></i>Online
+                    </span>
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-sm">
+                        <i class="fas fa-language mr-2"></i>5+ Languages
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Language Selector -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+            <h2 class="text-lg font-bold mb-4"><i class="fas fa-globe-africa text-green-600 mr-2"></i>Select Language / Chagua Lugha</h2>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="setLanguage('en')" class="lang-btn px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-medium border-2 border-blue-600">
+                    <span class="lang-flag">🇬🇧</span>English
+                </button>
+                <button onclick="setLanguage('sw')" class="lang-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium border-2 border-transparent hover:bg-green-100">
+                    <span class="lang-flag">🇰🇪</span>Kiswahili
+                </button>
+                <button onclick="setLanguage('yo')" class="lang-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium border-2 border-transparent hover:bg-green-100">
+                    <span class="lang-flag">🇳🇬</span>Yorùbá
+                </button>
+                <button onclick="setLanguage('zu')" class="lang-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium border-2 border-transparent hover:bg-green-100">
+                    <span class="lang-flag">🇿🇦</span>isiZulu
+                </button>
+                <button onclick="setLanguage('am')" class="lang-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium border-2 border-transparent hover:bg-green-100">
+                    <span class="lang-flag">🇪🇹</span>አማርኛ
+                </button>
+                <button onclick="setLanguage('fr')" class="lang-btn px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium border-2 border-transparent hover:bg-green-100">
+                    <span class="lang-flag">🇫🇷</span>Français
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Chat Interface -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg flex flex-col h-[600px]">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b flex items-center justify-between bg-gray-50 rounded-t-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Sauti Afrika</h3>
+                                <p class="text-sm text-gray-500" id="statusText">AI Assistant</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span id="activeLang" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm">🇬🇧 English</span>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="chat-bubble chat-bubble-bot p-3">
+                                <p class="text-sm">Hello! I'm Sauti Afrika Bot. I can speak multiple African languages including Swahili, Yoruba, Zulu, and Amharic. How can I help you today?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-4 border-t">
+                        <div class="flex space-x-2">
+                            <input type="text" id="chatInput" placeholder="Type your message..." 
+                                   class="flex-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+                                   onkeypress="if(event.key==='Enter') sendMessage()">
+                            <button onclick="sendMessage()" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-gray-500">
+                            <span>Press Enter to send</span>
+                            <span id="typingStatus"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar: Features & Channels -->
+            <div class="space-y-6">
+                <!-- Supported Channels -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="font-bold mb-4"><i class="fas fa-plug text-green-600 mr-2"></i>Supported Channels</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                            <div class="channel-icon bg-green-500 text-white">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm">Web Chat</p>
+                                <p class="text-xs text-gray-500">Built-in interface</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="channel-icon bg-green-600 text-white">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm">WhatsApp</p>
+                                <p class="text-xs text-gray-500">Webhook integration</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="channel-icon bg-blue-500 text-white">
+                                <i class="fab fa-telegram"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm">Telegram</p>
+                                <p class="text-xs text-gray-500">Bot API</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="channel-icon bg-indigo-500 text-white">
+                                <i class="fab fa-discord"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm">Discord</p>
+                                <p class="text-xs text-gray-500">Slash commands</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="font-bold mb-4"><i class="fas fa-star text-yellow-500 mr-2"></i>Features</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Multilingual AI responses</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Language auto-detection</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Context awareness</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Knowledge retrieval (RAG)</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Voice transcription</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-check text-green-500"></i>
+                            <span>Image generation</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- API Status -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="font-bold mb-4"><i class="fas fa-server text-blue-600 mr-2"></i>API Status</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">WebSocket</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Active</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">LLM Provider</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">OpenAI</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">Database</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Connected</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Conversations -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-lg font-bold mb-4"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Try These Sample Conversations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100" onclick="loadSample('weather')">
+                    <h4 class="font-semibold text-sm mb-2">☀️ Weather</h4>
+                    <p class="text-xs text-gray-600">"What's the weather in Nairobi?" / "Hali ya hewa Nairobi?"</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100" onclick="loadSample('culture')">
+                    <h4 class="font-semibold text-sm mb-2">🎭 Culture</h4>
+                    <p class="text-xs text-gray-600">"Tell me about Swahili culture" / "Niambie utamaduni wa Kiswahili"</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100" onclick="loadSample('business')">
+                    <h4 class="font-semibold text-sm mb-2">💼 Business</h4>
+                    <p class="text-xs text-gray-600">"How to start a business in Kenya?" / "Jinsi ya kuanza biashara?"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <h2 class="text-lg font-bold mb-4"><i class="fas fa-code text-purple-600 mr-2"></i>Technology Stack</h2>
+            <div class="flex flex-wrap gap-3">
+                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">TypeScript</span>
+                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">Node.js</span>
+                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">Fastify</span>
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm">tRPC</span>
+                <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm">MySQL</span>
+                <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">OpenAI</span>
+                <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm">WhatsApp API</span>
+                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">Telegram Bot</span>
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm">Discord.js</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">Sauti Afrika Bot - Connecting Africa through AI</p>
+            <p class="text-gray-400 text-sm">TypeScript • Node.js • Fastify • tRPC • MySQL • OpenAI</p>
+            <p class="text-gray-500 text-xs mt-2">Built with ❤️ by Sam Dwayne</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = 'en';
+        const greetings = {
+            'en': "Hello! I'm Sauti Afrika Bot. I can speak multiple African languages including Swahili, Yoruba, Zulu, and Amharic. How can I help you today?",
+            'sw': "Habari! Mimi ni Sauti Afrika Bot. Naweza kuzungumza lugha mbalimbali za Kiafrika kama Kiswahili, Kiioruba, Kiizulu, na Kiamhari. Nikusaidie vipi leo?",
+            'yo': "Ẹ n lẹ! Mo jẹ Sauti Afrika Bot. Mo lè sọ ọ̀rọ̀ ní èdè Gúúsù Áfíríkà bíi Yorùbá, Swahili, Zulu àti Amharic. Báwo ni mo ṣe lè ràn ọ́ lọ́wọ́ lónìí?",
+            'zu': "Sawubona! Ngingu Sauti Afrika Bot. Ngikhuluma izilimi eziningi zase-Afrika ezifana neSwahili, Yoruba, isiZulu nesi-Amharic. Ngikusize ngani namuhla?",
+            'am': "ሰላም! ውጭ አፍሪካ ቦት ነኝ። ስዋሂሊ፣ ዮሩባ፣ ዚሉ እና አማርኛን ጨምሮ ብዙ የአፍሪካ ቋንቋዎችን ልናገር እችላለሁ። ዛሬ እንዴት ልረዳዎት እችላለሁ?",
+            'fr': "Bonjour! Je suis Sauti Afrika Bot. Je parle plusieurs langues africaines dont le swahili, le yoruba, le zulu et l'amharique. Comment puis-je vous aider aujourd'hui?"
+        };
+
+        const langNames = {
+            'en': '🇬🇧 English',
+            'sw': '🇰🇪 Kiswahili',
+            'yo': '🇳🇬 Yorùbá',
+            'zu': '🇿🇦 isiZulu',
+            'am': '🇪🇹 አማርኛ',
+            'fr': '🇫🇷 Français'
+        };
+
+        const responses = {
+            'weather': {
+                'en': "Nairobi is currently experiencing warm weather with temperatures around 24°C (75°F). It's sunny with occasional clouds - a beautiful day!",
+                'sw': "Nairobi kwa sasa ina hali ya hewa ya joto kwa kiwango cha 24°C (75°F). Ni sunny na mawingu kadhaa - siku nzuri!",
+                'yo': "Nairobi ní òtútú ọ̀rọ̀lẹ́yẹfún pẹ̀lú ìwọ̀n ooru tó yí i ká 24°C (75°F). Ó lẹ́wà lónìí!",
+                'zu': "I-Nairobi okwamanje ibe nesimo sezulu esishisayo ama-degree angama-24°C (75°F). Kulungile namuhla!",
+                'am': "ናይሮቢ አሁን 24°C (75°F) የሙቀት መጠን ያለው ሞቃታማ ወቅት ናት። ዛሬ ያምራል!",
+                'fr': "Nairobi connaît actuellement un temps chaud avec des températures autour de 24°C (75°F). C'est ensoleillé - une belle journée!"
+            },
+            'culture': {
+                'en': "Swahili culture is rich and diverse, blending African, Arab, and Indian influences. It's known for its coastal traditions, distinctive architecture, delicious cuisine, and the beautiful Swahili language spoken across East Africa!",
+                'sw': "Utamaduni wa Kiswahili ni tajiri na wa aina mbalimbali, ukichanganya mila za Kiafrika, Kiarabu, na Kihindi. Ni maarufu kwa mila za pwani, majengo ya kipekee, chakula kitamu, na lugha nzuri ya Kiswahili inayozungumzwa Afrika Mashariki!",
+                'yo': "Àṣà Swahili dára púpọ̀, ó jàpá àṣà Áfíríkà, Láráàbà, àti Índíà. Ó kéré nínú orílẹ̀-èdè Gúúsù Áfíríkà!",
+                'zu': "Isiko lamaSwahili liphethwe yizinto ezahlukene zase-Afrika, ezase-Arabia nase-India. Kuningi okuzwakalayo!",
+                'am': "የስዋሂሊ ባህል ብዙ የተለያዩ የአፍሪካ፣ ዓረብ እና የህንድ ያልተሟላ ባህሎችን በማጣመር የላቀ እና የተለያየ ነው። በምሥራቅ አፍሪካ የሚነገረው ያማረው የስዋሂሊ ቋንቋ ይታወቃል!",
+                'fr': "La culture swahili est riche et diversifiée, mêlant des influences africaines, arabes et indiennes. Elle est connue pour ses traditions côtières, son architecture distinctive et sa belle langue!"
+            },
+            'business': {
+                'en': "To start a business in Kenya: 1) Register your business name, 2) Get a business permit from your county, 3) Register for taxes with KRA, 4) Open a business bank account. Costs start from about KES 1,000 for registration!",
+                'sw': "Ili kuanza biashara Kenya: 1) Sajili jina la biashara, 2) Pata leseni ya biashara kutoka kaunti yako, 3) Sajili kwa ushuru KRA, 4) Fungua akaunti ya benki ya biashara. Gharama zinaanza kutoka KES 1,000!",
+                'yo': "Láti bẹ̀rẹ̀ iṣòwò ní Kenya: 1) Forúkọsílẹ́ orúkọ ìwòsán rẹ, 2) Gba àyẹ̀wò iṣòwò, 3) Forúkọsílẹ́ fún owúrọ̀, 4) Ṣí àkánṣẹ́ owó ìwòsán. Ó bẹ̀rẹ̀ pẹ̀lú owó KES 1,000!",
+                'zu': "Ukuze uqalise ibhizinisi eKenya: 1) Bhalisa igama lebhizinisi, 2) Thola imvume yebhizinisi, 3) Bhalisa ngentela, 4) Vula i-akhawunti yebhizinisi. Iindleko ziqala kwi-KES 1,000!",
+                'am': "ቢዝነስ ለመጀመር ኬንያ: 1) የንግድ ስምዎን ይመዝግቡ፣ 2) ፍቃድ ይቀበሉ፣ 3) ግብር በKRA ይመዝገቡ፣ 4) የንግድ ባንክ ሂሳብ ይክፈቱ። ወጪው ከKES 1,000 ጀምሮ ነው!",
+                'fr': "Pour créer une entreprise au Kenya: 1) Enregistrez votre nom, 2) Obtenez un permis, 3) Inscrivez-vous aux impôts, 4) Ouvrez un compte bancaire. Les coûts commencent à KES 1,000!"
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('activeLang').textContent = langNames[lang];
+            
+            // Update button styles
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-100', 'text-blue-700', 'border-blue-600');
+                btn.classList.add('bg-gray-100', 'text-gray-700', 'border-transparent');
+            });
+            event.target.classList.remove('bg-gray-100', 'text-gray-700', 'border-transparent');
+            event.target.classList.add('bg-blue-100', 'text-blue-700', 'border-blue-600');
+            
+            // Add greeting in new language
+            addBotMessage(greetings[lang]);
+        }
+
+        function addUserMessage(text) {
+            const chat = document.getElementById('chatMessages');
+            chat.innerHTML += `
+                <div class="flex items-start space-x-3 justify-end">
+                    <div class="chat-bubble chat-bubble-user p-3">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            `;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const chat = document.getElementById('chatMessages');
+            chat.innerHTML += `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm flex-shrink-0">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="chat-bubble chat-bubble-bot p-3">
+                        <p class="text-sm">${text}</p>
+                    </div>
+                </div>
+            `;
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function showTyping() {
+            document.getElementById('typingStatus').innerHTML = `
+                <span class="typing-indicator">Typing<span>.</span><span>.</span><span>.</span></span>
+            `;
+        }
+
+        function hideTyping() {
+            document.getElementById('typingStatus').innerHTML = '';
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addUserMessage(text);
+            input.value = '';
+            
+            showTyping();
+            
+            setTimeout(() => {
+                hideTyping();
+                // Simple response logic
+                let response = "I'm a demo bot. In production, I would connect to the OpenAI API to provide intelligent responses in " + langNames[currentLang] + ". Try clicking on the sample conversation cards below!";
+                
+                if (text.toLowerCase().includes('hello') || text.toLowerCase().includes('habari') || text.toLowerCase().includes('sawubona')) {
+                    response = greetings[currentLang];
+                }
+                
+                addBotMessage(response);
+            }, 1000);
+        }
+
+        function loadSample(type) {
+            const texts = {
+                'weather': { 'en': "What's the weather in Nairobi?", 'sw': "Hali ya hewa Nairobi?", 'yo': "Báwo ni ojú ọ̀rọ̀ ti rí ní Nairobi?", 'zu': "Isimo sezulu sini eNairobi?", 'am': "በናይሮቢ ይሄን ዘረባ እንዴት ነው?", 'fr': "Quel temps fait-il à Nairobi?" },
+                'culture': { 'en': "Tell me about Swahili culture", 'sw': "Niambie utamaduni wa Kiswahili", 'yo': "Sọ fún mi nípa àṣà Swahili", 'zu': "Ngixoxele ngamasiko amaSwahili", 'am': "ስለስዋሂሊ ባህል ንገረኝ", 'fr': "Parlez-moi de la culture swahili" },
+                'business': { 'en': "How to start a business in Kenya?", 'sw': "Jinsi ya kuanza biashara Kenya?", 'yo': "Báwo ni a ṣe bẹ̀rẹ̀ iṣòwò ní Kenya?", 'zu': "Ukuze uqalise ibhizinisi eKenya?", 'am': "ቢዝነስ በኬንያ እንዴት ለመጀመር ይቻላል?", 'fr': "Comment créer une entreprise au Kenya?" }
+            };
+            
+            const text = texts[type][currentLang];
+            addUserMessage(text);
+            
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addBotMessage(responses[type][currentLang]);
+            }, 1500);
+        }
+
+        // Initialize
+        document.getElementById('chatInput').focus();
+    </script>
+</body>
+</html>

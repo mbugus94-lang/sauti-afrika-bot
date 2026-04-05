@@ -26,6 +26,15 @@
 
 ---
 
+## 🎮 Demo
+
+Try the interactive demo:
+- **Web Demo**: Open `public/demo.html` for an interactive multilingual chat showcase
+- **API Demo**: See [DEMO.md](DEMO.md) for detailed API walkthrough and examples
+- **Live Chat**: http://localhost:3000 (when running locally)
+
+---
+
 ## 🚀 Quick Start
 
 ### Installation
